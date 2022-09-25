@@ -33,7 +33,7 @@ public class Program
         return builder.Build();
     }
 
-    private static IServiceProvider CreateProvider()
+    private IServiceProvider CreateProvider()
     {
         var socketConfig = new DiscordSocketConfig();
 
@@ -41,13 +41,14 @@ public class Program
         {
             AutoServiceScopes = true
         };
-        
+
         var collection = new ServiceCollection()
             .AddSingleton(socketConfig)
             .AddSingleton<DiscordSocketClient>()
             .AddSingleton(interactionConfig)
-            .AddSingleton<InteractionService>();
-        
+            .AddSingleton<InteractionService>()
+            .AddSingleton(_config);
+            
         return collection.BuildServiceProvider();
     }
     
