@@ -49,7 +49,7 @@ public class MiscCmds : InteractionModuleBase
     {
         var uri = "https://api.strawpoll.com/v3/polls";
 
-        var answers =  modal.Answers.Split(", ");
+        var answers =  modal.Answers.Split(",");
 
         var pollAnswers = new List<Dictionary<string, object>>();
 
