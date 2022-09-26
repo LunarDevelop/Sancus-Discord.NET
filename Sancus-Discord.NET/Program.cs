@@ -28,7 +28,7 @@ public class Program
             #if DEBUG
             .AddJsonFile($"appsettings.Development.json", optional: false);
             #else
-            .AddJsonFile($"appsetting.Production.json", optional: false);
+            .AddJsonFile($"appsettings.Production.json", optional: false);
             #endif
         return builder.Build();
     }
