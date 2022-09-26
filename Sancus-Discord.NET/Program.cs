@@ -26,10 +26,12 @@ public class Program
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             #if DEBUG
-            .AddJsonFile($"appsettings.Development.json", optional: false);
+            .AddJsonFile($"appsettings.Development.json", optional: true)
             #else
-            .AddJsonFile($"appsettings.Production.json", optional: false);
+            .AddJsonFile($"appsettings.Production.json", optional: true)
             #endif
+            .AddJsonFile($"appsettings.json", optional: false);
+        
         return builder.Build();
     }
 
