@@ -30,7 +30,7 @@ public class Program
             #else
             .AddJsonFile($"appsettings.Production.json", optional: true)
             #endif
-            .AddJsonFile($"appsettings.json", optional: false);
+            .AddJsonFile($"appsettings.json", optional: true);
         
         return builder.Build();
     }
