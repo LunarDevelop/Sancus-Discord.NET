@@ -20,6 +20,6 @@ public class MiniGamesCmds : InteractionModuleBase
         string[] choices = new[] { "r", "p", "s" };
         string botChoice = choices[_random.Next(choices.Length)];
 
-        await ReplyAsync(botChoice);
+        await RespondAsync(botChoice);
     }
 }

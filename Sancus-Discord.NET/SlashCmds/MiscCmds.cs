@@ -38,7 +38,7 @@ public class MiscCmds : InteractionModuleBase
                 generalPingField
             }
         };
-        await ReplyAsync(embed: embed.Build());
+        await RespondAsync(embed: embed.Build());
     }
 
     [SlashCommand("create-poll", "Create a strawpoll that people can vote on.")]
