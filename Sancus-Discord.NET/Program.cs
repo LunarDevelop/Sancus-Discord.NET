@@ -25,12 +25,12 @@ public class Program
         // Builds a config for getting secrets from settings 
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile($"appsettings.json", optional: true)
             #if DEBUG
-            .AddJsonFile($"appsettings.Development.json", optional: true)
+            .AddJsonFile($"appsettings.Development.json", optional: true);
             #else
-            .AddJsonFile($"appsettings.Production.json", optional: true)
+            .AddJsonFile($"appsettings.Production.json", optional: true);
             #endif
-            .AddJsonFile($"appsettings.json", optional: true);
         
         return builder.Build();
     }
