@@ -4,21 +4,33 @@ using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Sancus_Discord.NET;
 
 public class Program
 {
+    public static async Task Main(string[] args)
+    {
+        await Host.CreateDefaultBuilder(args)
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddHostedService<ConsoleApplication>();
+            })
+            .RunConsoleAsync();
+    }
+}
+
+public class ConsoleApplication : IHostedService {
     private readonly IConfiguration _config;
     private readonly IServiceProvider _serviceProvider;
 
-    public Program()
+    public ConsoleApplication()
     {
         _config = CreateConfiguration();
         _serviceProvider = CreateProvider();
     }
     
-    public static Task Main(string[] args) => new Program().MainAsync();
 
     private static IConfiguration CreateConfiguration()
     {
@@ -90,5 +102,16 @@ public class Program
             await interactionService.ExecuteCommandAsync(ctx, _serviceProvider);
         };
 
+    }
+
+    public async Task StartAsync(CancellationToken cancellationToken)
+    {
+        await this.MainAsync();
+    }
+
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        Console.WriteLine("Console exited");
+        return Task.CompletedTask;
     }
 }
