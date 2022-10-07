@@ -5,8 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [0.2.0] - xxxx-xx-xx
 
-## [0.1.0] - xxxx-xx-xx
+
+## [0.1.0] - 2022-10-07
 ### Added
 * This changelog will serve as a record keeping of the changes made to Sancus Discord.NET
 * New Commands
@@ -19,4 +21,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Flip Coin [Choice]
     * Just flipping a coin in the air
 
-[0.0.1]: https://github.com/LunarDevelop/Sancus-Discord.NET
+[0.0.1] : https://github.com/LunarDevelop/Sancus-Discord.NET/releases/tag/v0.1.0
