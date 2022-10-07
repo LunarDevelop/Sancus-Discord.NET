@@ -18,28 +18,44 @@ public class MiniGamesCmds : InteractionModuleBase
         [Choice("Rock", "r"), Choice("Paper", "p"), Choice("Scissors", "s")] string option)
     {
         // Sets arrays for each object 
-        string[] choices = new[] { "r", "p", "s" };
-        string[] choicesName = new[] { "Rock", "Paper", "Scissors" };
-        int randomNumber = _random.Next(choices.Length);
-        string botChoice = choices[randomNumber];
-        string botWord = choicesName[randomNumber];
+        var choices = new List<string[]> { new[] {"r", "Rock"}, new [] { "p", "Paper" }, new [] { "s", "Scissors" } };
+        var randomNumber = _random.Next(choices.Count);
+        var botResponse = choices[randomNumber];
 
         // If user wins
-        if (((botChoice == "r") && (option == "p")) ||
-            (botChoice == "p" && option == "s") ||
-            (botChoice == "s" && option == "r"))
+        if (((botResponse[0] == "r") && (option == "p")) ||
+            (botResponse[0] == "p" && option == "s") ||
+            (botResponse[0] == "s" && option == "r"))
         {
-            await RespondAsync($"Bot choose {botWord}\nYOU WON!!");
+            await RespondAsync($"Bot chose {botResponse[1]}\nYOU WON!!");
         }
         // If user and bot tie
-        else if (botChoice == option)
+        else if (botResponse[0] == option)
         {
-            await RespondAsync($"Bot choose {botWord}\nYou have the same word, tie.");
+            await RespondAsync($"Bot chose {botResponse[1]}\nYou have the same word, tie.");
         }
         //  If user loses
         else
         {
-            await RespondAsync($"Bot choose {botWord}\nYou lost, :(");
+            await RespondAsync($"Bot chose {botResponse[1]}\nYou lost. :frowning:");
+        }
+    }
+
+    [SlashCommand("flip_coin", "Get to flip a coin and guess the answer")]
+    public async Task FlipCoin(
+        [Choice("Heads", "h"), Choice("Tails", "t")] string userInput)
+    {
+        var choices = new List<string[]> { new[] {"h", "Heads"}, new[] { "t", "Tails" } };
+
+        var botResponse = choices[_random.Next(choices.Count)];
+
+        if (botResponse[0] == userInput)
+        {
+            await RespondAsync($"The coin flipped onto {botResponse[1]}\nYou guess correctly, well done!");
+        }
+        else
+        {
+            await RespondAsync($"The coin flipped onto {botResponse[1]}\nYou guessed incorrect, better luck next time.");
         }
     }
 }
