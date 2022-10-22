@@ -5,6 +5,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sancus_Discord.NET.SlashCmds.GuildCmds;
 
 namespace Sancus_Discord.NET;
 
@@ -89,10 +90,14 @@ public class ConsoleApplication : IHostedService {
         var interactionService = _serviceProvider.GetRequiredService<InteractionService>();
 
         await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _serviceProvider);
-        
+
         #if DEBUG   
         await interactionService.RegisterCommandsToGuildAsync(780211278614364160);
         #else   
+        var lunarDevCmdsModule = interactionService.GetModuleInfo<LunarDevCmds>();
+        await interactionService.AddModulesToGuildAsync(780211278614364160, 
+            true,
+            lunarDevCmdsModule);
         await interactionService.RegisterCommandsGloballyAsync();
         #endif  
         
