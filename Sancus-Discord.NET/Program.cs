@@ -5,6 +5,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using fluxpoint_sharp;
 using Sancus_Discord.NET.SlashCmds.GuildCmds;
 
 namespace Sancus_Discord.NET;
@@ -57,13 +58,16 @@ public class ConsoleApplication : IHostedService {
             AutoServiceScopes = true
         };
 
+        var fluxClient = new FluxpointClient("Sancus", _config["FluxPoint:Token"]);
+
         var collection = new ServiceCollection()
             .AddSingleton(socketConfig)
             .AddSingleton<DiscordSocketClient>()
             .AddSingleton(interactionConfig)
             .AddSingleton<InteractionService>()
-            .AddSingleton(_config);
-            
+            .AddSingleton(_config)
+            .AddSingleton(fluxClient);
+
         return collection.BuildServiceProvider();
     }
     
