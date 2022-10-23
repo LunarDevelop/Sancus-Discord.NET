@@ -23,7 +23,7 @@ public class Program
     }
 }
 
-public class ConsoleApplication : IHostedService {
+public partial class ConsoleApplication : IHostedService {
     private readonly IConfiguration _config;
     private readonly IServiceProvider _serviceProvider;
 
@@ -71,13 +71,16 @@ public class ConsoleApplication : IHostedService {
         return collection.BuildServiceProvider();
     }
     
-    private async Task MainAsync()
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         var client = _serviceProvider.GetRequiredService<DiscordSocketClient>();
 
         var unused = new LoggingService(client);
 
         client.Ready += OnReady;
+        
+        // TODO: fix this so that it actually displays the messages or at least puts a message in the console
+        client.UserJoined += UserJoined;
 
         var token = _config["Discord:Token"];
         await client.LoginAsync(TokenType.Bot, token);
@@ -91,6 +94,7 @@ public class ConsoleApplication : IHostedService {
     private async Task OnReady()
     {
         var client = _serviceProvider.GetRequiredService<DiscordSocketClient>();
+        
         var interactionService = _serviceProvider.GetRequiredService<InteractionService>();
 
         await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _serviceProvider);
@@ -112,12 +116,7 @@ public class ConsoleApplication : IHostedService {
         };
 
     }
-
-    public async Task StartAsync(CancellationToken cancellationToken)
-    {
-        await this.MainAsync();
-    }
-
+    
     public Task StopAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("Console exited");
