@@ -91,35 +91,38 @@ public partial class ConsoleApplication : IHostedService {
         await Task.Delay(-1);
     }
 
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        Console.WriteLine("Console exited");
+        return Task.CompletedTask;
+    }
+
     private async Task OnReady()
     {
         var client = _serviceProvider.GetRequiredService<DiscordSocketClient>();
-        
+
         var interactionService = _serviceProvider.GetRequiredService<InteractionService>();
 
         await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), _serviceProvider);
 
-        #if DEBUG   
-        await interactionService.RegisterCommandsToGuildAsync(780211278614364160);
-        #else   
-        var lunarDevCmdsModule = interactionService.GetModuleInfo<LunarDevCmds>();
-        await interactionService.AddModulesToGuildAsync(780211278614364160, 
-            true,
-            lunarDevCmdsModule);
-        await interactionService.RegisterCommandsGloballyAsync();
-        #endif  
-        
+        if (Convert.ToBoolean(_config["IsDev"]))
+            await interactionService.RegisterCommandsToGuildAsync(780211278614364160);
+
+        else
+        {
+            var lunarDevCmdsModule = interactionService.GetModuleInfo<LunarDevCmds>();
+            await interactionService.AddModulesToGuildAsync(780211278614364160,
+                true,
+                lunarDevCmdsModule);
+            await interactionService.RegisterCommandsGloballyAsync();
+        }
+
+
         client.InteractionCreated += async interaction =>
         {
             var ctx = new SocketInteractionContext(client, interaction);
             await interactionService.ExecuteCommandAsync(ctx, _serviceProvider);
         };
 
-    }
-    
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        Console.WriteLine("Console exited");
-        return Task.CompletedTask;
     }
 }
