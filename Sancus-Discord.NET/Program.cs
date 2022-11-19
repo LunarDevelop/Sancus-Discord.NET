@@ -111,7 +111,7 @@ public partial class ConsoleApplication : IHostedService {
         else
         {
             var lunarDevCmdsModule = interactionService.GetModuleInfo<LunarDevCmds>();
-            await interactionService.AddModulesToGuildAsync(780211278614364160,
+            await interactionService.AddModulesToGuildAsync(789941733998854176,
                 true,
                 lunarDevCmdsModule);
             await interactionService.RegisterCommandsGloballyAsync();
