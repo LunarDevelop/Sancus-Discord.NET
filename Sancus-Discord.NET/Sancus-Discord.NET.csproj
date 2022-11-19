@@ -30,4 +30,9 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LoggerService\LoggerService.csproj" />
+      <ProjectReference Include="..\MongoDbService\MongoDbService.csproj" />
+    </ItemGroup>
+
 </Project>

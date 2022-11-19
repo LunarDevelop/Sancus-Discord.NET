@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sancus-Discord.NET", "Sancus-Discord.NET\Sancus-Discord.NET.csproj", "{6DBCC333-A0B6-4DA6-B7F1-B00EA6CC8D15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerService", "LoggerService\LoggerService.csproj", "{6655F42A-2931-4566-A230-E6A28C044F61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoDbService", "MongoDbService\MongoDbService.csproj", "{9136C948-050B-4188-A5EC-413549E47019}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{6DBCC333-A0B6-4DA6-B7F1-B00EA6CC8D15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DBCC333-A0B6-4DA6-B7F1-B00EA6CC8D15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DBCC333-A0B6-4DA6-B7F1-B00EA6CC8D15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6655F42A-2931-4566-A230-E6A28C044F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6655F42A-2931-4566-A230-E6A28C044F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6655F42A-2931-4566-A230-E6A28C044F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6655F42A-2931-4566-A230-E6A28C044F61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9136C948-050B-4188-A5EC-413549E47019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9136C948-050B-4188-A5EC-413549E47019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9136C948-050B-4188-A5EC-413549E47019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9136C948-050B-4188-A5EC-413549E47019}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
