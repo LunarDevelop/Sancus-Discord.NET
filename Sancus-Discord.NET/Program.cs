@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using fluxpoint_sharp;
+using Sancus_Discord.NET.Events;
 using Sancus_Discord.NET.SlashCmds.GuildCmds;
 
 namespace Sancus_Discord.NET;
@@ -17,17 +18,17 @@ public class Program
         await Host.CreateDefaultBuilder(args)
             .ConfigureServices((hostContext, services) =>
             {
-                services.AddHostedService<ConsoleApplication>();
+                services.AddHostedService<Sancus>();
             })
             .RunConsoleAsync();
     }
 }
 
-public partial class ConsoleApplication : IHostedService {
+public partial class Sancus : IHostedService {
     private readonly IConfiguration _config;
     private readonly IServiceProvider _serviceProvider;
 
-    public ConsoleApplication()
+    public Sancus()
     {
         _config = CreateConfiguration();
         _serviceProvider = CreateProvider();
@@ -78,9 +79,8 @@ public partial class ConsoleApplication : IHostedService {
         var unused = new LoggingService(client);
 
         client.Ready += OnReady;
-        
-        // TODO: fix this so that it actually displays the messages or at least puts a message in the console
-        client.UserJoined += UserJoined;
+
+        client.UserJoined += EventManager.UserJoined;
 
         var token = _config["Discord:Token"];
         await client.LoginAsync(TokenType.Bot, token);
