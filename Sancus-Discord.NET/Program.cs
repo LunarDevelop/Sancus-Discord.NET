@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using fluxpoint_sharp;
+using MongoDbService;
+using MongoDbService.Models;
 using Sancus_Discord.NET.Events;
 using Sancus_Discord.NET.SlashCmds.GuildCmds;
 
@@ -61,7 +63,7 @@ public partial class Sancus : IHostedService {
 
         var fluxClient = new FluxpointClient("Sancus", _config["FluxPoint:Token"]);
 
-        var collection = new ServiceCollection()
+        var service = new ServiceCollection()
             .AddSingleton(socketConfig)
             .AddSingleton<DiscordSocketClient>()
             .AddSingleton(interactionConfig)
@@ -69,7 +71,13 @@ public partial class Sancus : IHostedService {
             .AddSingleton(_config)
             .AddSingleton(fluxClient);
 
-        return collection.BuildServiceProvider();
+        service.AddSingleton<MongoDbSettings>(
+            new MongoDbSettings(_config["MongoDb:ConnString"],
+            _config["MongoDb:Database"]));
+
+        service.AddScoped(typeof(IEntityBaseRepository<>), typeof(EntityBaseRepository<>));
+
+        return service.BuildServiceProvider();
     }
     
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -78,9 +86,12 @@ public partial class Sancus : IHostedService {
 
         var unused = new LoggingService(client);
 
+        var eventManger = new EventManager(_serviceProvider);
+
         client.Ready += OnReady;
 
-        client.UserJoined += EventManager.UserJoined;
+        client.UserJoined += eventManger.UserJoined;
+        client.MessageUpdated += eventManger.MessageEdit;
 
         var token = _config["Discord:Token"];
         await client.LoginAsync(TokenType.Bot, token);
