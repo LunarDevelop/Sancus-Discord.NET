@@ -25,12 +25,9 @@ public class EntityBaseRepository<TEntityBase> : IEntityBaseRepository<TEntityBa
     public bool Insert(TEntityBase entity)
     {
         entity.Id = ObjectId.GenerateNewId();
-        var result = _collection.InsertOneAsync(entity);
-
-        result.Start();
-        result.Wait();
-
-        return result.IsCompleted;
+        var task = _collection.InsertOneAsync(entity);
+        task.Wait();
+        return task.IsCompleted;
     }
 
     public bool Update(TEntityBase entity)
