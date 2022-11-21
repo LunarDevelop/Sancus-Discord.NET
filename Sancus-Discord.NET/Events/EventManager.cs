@@ -22,19 +22,14 @@ public class EventManager
     public async Task UserJoined(SocketGuildUser user)
     {
         var guildSetting = _guildSettings.SearchFor(x => x.GuildId == user.Guild.Id)[0];
-        Console.WriteLine(guildSetting.GuildId);
 
         if (guildSetting is not { UserJoinLog: true }) return;
 
         var message = new LunarEmbed()
         {
-            Author = new EmbedAuthorBuilder()
-            {
-                IconUrl = user.GetGuildAvatarUrl(),
-                Name = user.Guild.Name
-            },
-            Title = $"Welcome {user.Nickname} to the server",
-            ThumbnailUrl = user.GetDisplayAvatarUrl()
+            Title = $"Welcome {user.DisplayName} to the server",
+            Color = LunarEmbed.InfoColor,
+            ThumbnailUrl = user.GetDisplayAvatarUrl() ?? user.GetDefaultAvatarUrl()
         };
 
         var logChannel = user.Guild.Channels.Where(x => x.Id == guildSetting.UserJoinedLogChannel)
@@ -56,22 +51,23 @@ public class EventManager
 
         var returnMessage = new LunarEmbed()
         {
-            Author = new EmbedAuthorBuilder()
+            Author = new()
             {
                 IconUrl = after.Author.GetAvatarUrl(),
-                Name = after.Author.Username
+                Name = after.Author.Username,
+                Url = after.GetJumpUrl()
             },
-            Title = $"A message has been edited, {after.Id}",
+            Title = $"A message has been edited",
             Color = LunarEmbed.InfoColor,
-            Fields = new List<EmbedFieldBuilder>()
+            Fields = new()
             {
-                new EmbedFieldBuilder()
+                new EmbedFieldBuilder
                 {
                     Name = "Old message",
                     Value = $"{beforeMessageContent}",
                     IsInline = false
                 },
-                new EmbedFieldBuilder()
+                new EmbedFieldBuilder
                 {
                     Name = "Edited message",
                     Value = $"{after}",
@@ -79,10 +75,9 @@ public class EventManager
                 }
             }
         };
-        var logChannel = guildChannel.Guild.Channels.Where(x => x.Id == guildSetting.MessageEditLogChannel)
-            .First() as SocketTextChannel;
 
-        if (logChannel is not null)
+        if (guildChannel.Guild.Channels.Where(x => x.Id == guildSetting.MessageEditLogChannel)
+                .First() is SocketTextChannel logChannel)
             await logChannel.SendMessageAsync(embed: returnMessage.Build());
     }
 }
