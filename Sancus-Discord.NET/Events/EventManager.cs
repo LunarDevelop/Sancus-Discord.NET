@@ -36,10 +36,10 @@ public class EventManager
             Title = $"Welcome {user.Nickname} to the server",
             ThumbnailUrl = user.GetDisplayAvatarUrl()
         };
-        Console.WriteLine(guildSetting.UserJoinedLogChannel);
+
         var logChannel = user.Guild.Channels.Where(x => x.Id == guildSetting.UserJoinedLogChannel)
             .First() as SocketTextChannel;
-        Console.WriteLine(logChannel.Name);
+
         if (logChannel is not null)
             await logChannel.SendMessageAsync(embed: message.Build());
     }
@@ -53,7 +53,6 @@ public class EventManager
         if (guildSetting is not { MessageEditLog: true }) return;
 
         var beforeMessageContent = await before.GetOrDownloadAsync();
-        Console.WriteLine(before.Id == after.Id);
 
         var returnMessage = new LunarEmbed()
         {
@@ -63,6 +62,7 @@ public class EventManager
                 Name = after.Author.Username
             },
             Title = $"A message has been edited, {after.Id}",
+            Color = LunarEmbed.InfoColor,
             Fields = new List<EmbedFieldBuilder>()
             {
                 new EmbedFieldBuilder()
@@ -71,13 +71,12 @@ public class EventManager
                     Value = $"{beforeMessageContent}",
                     IsInline = false
                 },
-                // TODO fix the after message content
-                // new EmbedFieldBuilder()
-                // {
-                //     Name = "Edited message",
-                //     Value = $"{after}",
-                //     IsInline = false
-                // }
+                new EmbedFieldBuilder()
+                {
+                    Name = "Edited message",
+                    Value = $"{after}",
+                    IsInline = false
+                }
             }
         };
         var logChannel = guildChannel.Guild.Channels.Where(x => x.Id == guildSetting.MessageEditLogChannel)

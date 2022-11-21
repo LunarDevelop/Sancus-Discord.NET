@@ -54,7 +54,11 @@ public partial class Sancus : IHostedService {
 
     private IServiceProvider CreateProvider()
     {
-        var socketConfig = new DiscordSocketConfig();
+        var socketConfig = new DiscordSocketConfig()
+        {
+            MessageCacheSize = 100,
+            GatewayIntents = GatewayIntents.GuildMessages | GatewayIntents.All
+        };
 
         var interactionConfig = new InteractionServiceConfig()
         {
