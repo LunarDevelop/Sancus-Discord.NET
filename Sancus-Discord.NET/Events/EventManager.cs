@@ -11,12 +11,14 @@ namespace Sancus_Discord.NET.Events;
 public class EventManager
 {
     private readonly IEntityBaseRepository<GuildSettings> _guildSettings;
+    private readonly IEntityBaseRepository<BotSettings> _botSettings;
 
     public EventManager(IServiceProvider services)
     {
         var scope = services.CreateScope();
         var provider = scope.ServiceProvider;
         _guildSettings = provider.GetRequiredService<IEntityBaseRepository<GuildSettings>>();
+        _botSettings = provider.GetRequiredService<IEntityBaseRepository<BotSettings>>();
     }
 
     public async Task UserJoined(SocketGuildUser user)
@@ -28,7 +30,7 @@ public class EventManager
         var message = new LunarEmbed()
         {
             Title = $"Welcome {user.DisplayName} to the server",
-            Color = LunarEmbed.InfoColor,
+            Color = _botSettings.GetAll()[0].UserJoinLogColor,
             ThumbnailUrl = user.GetDisplayAvatarUrl() ?? user.GetDefaultAvatarUrl()
         };
 
@@ -58,7 +60,7 @@ public class EventManager
                 Url = after.GetJumpUrl()
             },
             Title = $"A message has been edited",
-            Color = LunarEmbed.InfoColor,
+            Color = _botSettings.GetAll()[0].MessageEditLogColor,
             Fields = new()
             {
                 new EmbedFieldBuilder
