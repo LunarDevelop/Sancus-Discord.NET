@@ -15,5 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      working-directory: Sancus-Discord.NET
       run: docker build . --file Dockerfile --tag sancus-discord:$(date +%s)

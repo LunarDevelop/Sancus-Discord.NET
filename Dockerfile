@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Sancus-Discord.NET.csproj", "Sancus-Discord.NET/"]
 RUN dotnet restore "Sancus-Discord.NET/Sancus-Discord.NET.csproj"
-COPY .. ..
+COPY . .
 WORKDIR "/src/Sancus-Discord.NET"
 RUN dotnet build "Sancus-Discord.NET.csproj" -c Release -o /app/build
 
