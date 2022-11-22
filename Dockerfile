@@ -4,9 +4,9 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Sancus-Discord.NET/Sancus-Discord.NET.csproj", "Sancus-Discord.NET/"]
-RUN dotnet restore "Sancus-Discord.NET/Sancus-Discord.NET.csproj"
+COPY ["LoggerService/LoggerService.csproj", "LoggerService/"]
 COPY ["MongoDbService/MongoDbService.csproj", "MongoDbService/"]
-COPY ["LoggingService/LoggingService.csproj", "LoggingService/"]
+RUN dotnet restore "Sancus-Discord.NET/Sancus-Discord.NET.csproj"
 COPY . .
 WORKDIR "/src/Sancus-Discord.NET"
 RUN dotnet build "Sancus-Discord.NET.csproj" -c Release -o /app/build
