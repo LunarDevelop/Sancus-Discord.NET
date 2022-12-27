@@ -43,11 +43,8 @@ public partial class Sancus : IHostedService {
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile($"appsettings.json", optional: true)
-            #if DEBUG
-            .AddJsonFile($"appsettings.Development.json", optional: true);
-            #else
+            .AddJsonFile($"appsettings.Development.json", optional: true)
             .AddJsonFile($"appsettings.Production.json", optional: true);
-            #endif
         
         return builder.Build();
     }
