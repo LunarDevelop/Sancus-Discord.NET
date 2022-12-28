@@ -41,6 +41,24 @@ public class EventManager
             await logChannel.SendMessageAsync(embed: message.Build());
     }
 
+    public async Task UserLeft(SocketGuild guild, SocketUser user)
+    {
+        var guildSetting = _guildSettings.SearchFor(x => x.GuildId == guild.Id)[0];
+
+        if (guildSetting is not { UserLeftLog: true }) return;
+
+        var message = new LunarEmbed()
+        {
+            Title = $"{user.Username} has left the server.",
+            Color = _botSettings.GetAll()[0].UserLeaveLogColor,
+            ThumbnailUrl = user.GetAvatarUrl() ?? user.GetDefaultAvatarUrl()
+        };
+
+        if (guild.Channels
+                .First(x => x.Id == guildSetting.UserLeftLogChannel) is SocketTextChannel logChannel)
+            await logChannel.SendMessageAsync(embed: message.Build());
+    }
+
     public async Task MessageEdit(Cacheable<IMessage, ulong> before, SocketMessage after,
         ISocketMessageChannel channel)
     {

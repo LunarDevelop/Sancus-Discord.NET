@@ -77,6 +77,7 @@ public partial class Sancus : IHostedService {
             _config["MongoDb:Database"]));
 
         service.AddScoped(typeof(IEntityBaseRepository<>), typeof(EntityBaseRepository<>));
+        service.AddSingleton<Utilities>();
 
         return service.BuildServiceProvider();
     }
@@ -92,6 +93,7 @@ public partial class Sancus : IHostedService {
         client.Ready += OnReady;
 
         client.UserJoined += eventManger.UserJoined;
+        client.UserLeft += eventManger.UserLeft;
         client.MessageUpdated += eventManger.MessageEdit;
 
         var token = _config["Discord:Token"];

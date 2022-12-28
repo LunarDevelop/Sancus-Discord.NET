@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MongoDbService;
 using MongoDbService.Models;
 
 namespace Sancus_Discord.NET.Models;
@@ -10,6 +11,9 @@ public class GuildSettings : EntityBase
 
     public bool UserJoinLog { get; set; } = false;
     public ulong? UserJoinedLogChannel { get; set; }
+
+    public bool UserLeftLog { get; set; } = false;
+    public ulong? UserLeftLogChannel { get; set; }
 
     public bool MessageEditLog { get; set; } = false;
     public ulong? MessageEditLogChannel { get; set; }
