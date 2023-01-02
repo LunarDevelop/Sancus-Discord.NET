@@ -65,8 +65,31 @@ public class AdminCmds : InteractionModuleBase
         }
 
         [SlashCommand("joinchannel", "Change User Join Log Channel")]
-        public async Task JoinLogChannelChange([ChannelTypes(ChannelType.Text)]SocketChannel newChannel)
+        public async Task JoinLogChannelChange(SocketTextChannel newChannel)
         {
+            try
+            {
+                var joinChannelMessage = new LunarEmbed()
+                {
+                    Title = "Welcome channel!",
+                    Description = "This is the channel where I will welcome new users to the channel",
+                    Color = LunarEmbed.InfoColor
+                };
+                await newChannel.SendMessageAsync(embed: joinChannelMessage.Build());
+            }
+            catch (Exception e)
+            {
+                var errorMessage = new LunarEmbed()
+                {
+                    Title = "Permission Error",
+                    Description = "I am missing the permissions to write to that channel",
+                    Color = LunarEmbed.ErrorColor
+                };
+                await RespondAsync(embed: errorMessage.Build());
+                Console.WriteLine(e);
+                return;
+            }
+
             var guild = Context.Guild;
             var guildSettings = _utilities.GetGuildSettings(guild);
 
@@ -79,12 +102,36 @@ public class AdminCmds : InteractionModuleBase
                 Color = LunarEmbed.InfoColor,
             };
 
+
             await RespondAsync(embed: message.Build());
         }
 
         [SlashCommand("leftchannel", "Change User Leave Log Channel")]
-        public async Task UserLeveLogChannelChange(SocketChannel newChannel)
+        public async Task UserLeaveLogChannelChange(SocketTextChannel newChannel)
         {
+            try
+            {
+                var joinChannelMessage = new LunarEmbed()
+                {
+                    Title = "Leaving channel!",
+                    Description = "This is the channel where I will let you know who has left the server",
+                    Color = LunarEmbed.InfoColor
+                };
+                await newChannel.SendMessageAsync(embed: joinChannelMessage.Build());
+            }
+            catch (Exception e)
+            {
+                var errorMessage = new LunarEmbed()
+                {
+                    Title = "Permission Error",
+                    Description = "I am missing the permissions to write to that channel",
+                    Color = LunarEmbed.ErrorColor
+                };
+                await RespondAsync(embed: errorMessage.Build());
+                Console.WriteLine(e);
+                return;
+            }
+
             var guild = Context.Guild;
             var guildSettings = _utilities.GetGuildSettings(guild);
 
