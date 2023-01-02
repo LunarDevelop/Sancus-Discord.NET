@@ -1,5 +1,4 @@
 using Discord;
-using Discord.Commands;
 using Discord.Interactions;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +10,7 @@ namespace Sancus_Discord.NET.SlashCmds;
 
 [EnabledInDm(false)]
 [DefaultMemberPermissions(GuildPermission.ManageGuild)]
-[Discord.Interactions.Group("admin", "Admin commands can be found here.")]
+[Group("admin", "Admin commands can be found here.")]
 public class AdminCmds : InteractionModuleBase
 {
     private readonly InteractionService _interaction;
@@ -29,7 +28,7 @@ public class AdminCmds : InteractionModuleBase
         _guildSettings = provider.GetRequiredService<IEntityBaseRepository<GuildSettings>>();
     }
 
-    [Discord.Interactions.Group("users", "User settings")]
+    [Group("users", "User settings")]
     public class UserSettings: InteractionModuleBase
     {
         private readonly InteractionService _interaction;
